@@ -3,7 +3,9 @@ const PageHeaderLayout = ({ children }) => {
   <>
       <h1>To-Do WebApp</h1>
       <hr></hr>
-      {children}
+      <main>
+        {children}
+      </main>
   </>
   )
 }
