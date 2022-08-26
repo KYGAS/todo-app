@@ -6,8 +6,6 @@ const AboutPage = () => {
     <>
       <MetaTags title="About" description="About page" />
 
-      <h1>Project description</h1>
-      <hr></hr>
       <p>
         This is a test project to assess my knowledge gain over the past week while working with Stuntcoders.
       </p>
