@@ -99,3 +99,13 @@ const Routes = () => {
 }
 
 export default Routes
+
+
+/*
+TO DO :
+- Separate view into cells ( view organisation, view project, view task, view message)
+- Add further routing to home ( login, register)
+- Group routes based on authentication need
+- Add query logic to group elements by logged-in user
+- TBC
+*/
