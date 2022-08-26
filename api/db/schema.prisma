@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -11,8 +11,82 @@ generator client {
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
 // to create migrations for them and apply to your dev DB.
 // TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model User {
+  id                  Int                 @id @default(autoincrement())
+  username            String              @unique
+  email               String              @unique
+  fName               String
+  lName               String
+  hashedPassword      String
+  salt                String
+  resetToken          String?
+  resetTokenExpiresAt DateTime?
+  User_Organisation   User_Organisation[]
+}
+
+model Organisation {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  owner_id             Int
+  User_Organisation    User_Organisation[]
+  Organisation_Project Organisation_Project[]
+}
+
+model Project {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  Organisation_Project Organisation_Project[]
+  Project_Task         Project_Task[]
+}
+
+model Task {
+  id                    Int            @id @default(autoincrement())
+  name                  String
+  status                String
+  responsible_person_id Int
+  Project_Task          Project_Task[]
+  Task_Message          Task_Message[]
+}
+
+model Message {
+  id           Int            @id @default(autoincrement())
+  creator_id   Int
+  message      String
+  Task_Message Task_Message[]
+}
+
+model User_Organisation {
+  user            User         @relation(fields: [user_id], references: [id])
+  user_id         Int
+  organisation    Organisation @relation(fields: [organisation_id], references: [id])
+  organisation_id Int
+
+  @@id([user_id, organisation_id])
+}
+
+model Organisation_Project {
+  organisation    Organisation @relation(fields: [organisation_id], references: [id])
+  organisation_id Int
+  project         Project      @relation(fields: [project_id], references: [id])
+  project_id      Int
+
+  @@id([organisation_id, project_id])
+}
+
+model Project_Task {
+  project    Project @relation(fields: [project_id], references: [id])
+  project_id Int
+  task       Task    @relation(fields: [task_id], references: [id])
+  task_id    Int
+
+  @@id([project_id, task_id])
+}
+
+model Task_Message {
+  task       Task    @relation(fields: [task_id], references: [id])
+  task_id    Int
+  message    Message @relation(fields: [message_id], references: [id])
+  message_id Int
+
+  @@id([task_id, message_id])
 }
