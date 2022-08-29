@@ -89,7 +89,6 @@ const Routes = () => {
           </Set>
         </Private>
         <Route path="/about" page={AboutPage} name="about" />
-        <Route path="/home" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />
         <Route path="/login" page={LoginPage} name="login" />
         <Route path="/signup" page={SignupPage} name="signup" />
