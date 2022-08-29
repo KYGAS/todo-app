@@ -1,6 +1,6 @@
 import OrganisationsCell from 'src/components/Organisation/OrganisationsCell'
 
-const OrganisationsPage = () => {
+const OrganisationsPage = ({id}) => {
   return <OrganisationsCell />
 }
 
