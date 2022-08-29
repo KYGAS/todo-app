@@ -13,6 +13,12 @@ const HomePage = () => {
       <p>
         <Link to={routes.about()}>About the project</Link>
       </p>
+      <p>
+        <Link to={routes.login()}>Log In</Link>
+      </p>
+      <p>
+        <Link to={routes.signup()}>Sign Up</Link>
+      </p>
     </>
   )
 }
