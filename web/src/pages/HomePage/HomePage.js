@@ -6,7 +6,7 @@ const HomePage = () => {
 
   const { isAuthenticated, currentUser, logOut } = useAuth()
 
-  let AuthenticatingLinks = isAuthenticated?(
+  let AuthenticatingLinks = !isAuthenticated?(
     <div>
       <p>
         <Link to={routes.login()}>Log In</Link>
