@@ -6,7 +6,7 @@ const PageHeaderLayout = ({ children }) => {
 
   let isLoggedIn = isAuthenticated ? (
     <div>
-      <span>Logged in as {currentUser.id}</span>{' '}
+      <span>Logged in as {currentUser.id}</span>{' '}<br></br>
       <button type="button" onClick={logOut}>
         Logout
       </button>
@@ -20,6 +20,7 @@ const PageHeaderLayout = ({ children }) => {
       <h1><Link to={routes.home()}>To-Do WebApp</Link>
         {isLoggedIn}
       </h1>
+      <br></br>
       <hr></hr>
       <main>
         {children}

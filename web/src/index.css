@@ -1,3 +1,11 @@
 #redwood-app h1 {
   text-align: center;
 }
+
+#redwood-app h1 a:last-child {
+  float: right;
+}
+
+#redwood-app h1 div:last-child {
+  float: right;
+}
