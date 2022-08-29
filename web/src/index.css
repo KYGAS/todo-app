@@ -9,3 +9,7 @@
 #redwood-app h1 div:last-child {
   float: right;
 }
+
+.logged-user {
+  display: block;
+}

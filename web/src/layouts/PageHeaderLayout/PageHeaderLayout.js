@@ -6,10 +6,8 @@ const PageHeaderLayout = ({ children }) => {
 
   let isLoggedIn = isAuthenticated ? (
     <div>
-      <span>Logged in as {currentUser.id}</span>{' '}<br></br>
-      <button type="button" onClick={logOut}>
-        Logout
-      </button>
+      <span className="logged-user">Logged in as {currentUser.id}</span>{' '}
+      <button type="button" onClick={logOut}>Logout</button>
     </div>
   ) : (
     <Link to={routes.login()}>Login</Link>
