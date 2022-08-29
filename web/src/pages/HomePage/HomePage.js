@@ -15,7 +15,13 @@ const HomePage = () => {
         <Link to={routes.signup()}>Sign Up</Link>
       </p>
     </div>
-  ):""
+  ):(
+    <div>
+      <p>
+        <Link to={routes.organisations({id})}>Organisations</Link>
+      </p>
+    </div>
+  )
 
   return (
     <>
