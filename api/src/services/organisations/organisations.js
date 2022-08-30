@@ -29,6 +29,10 @@ export const deleteOrganisation = ({ id }) => {
   })
 }
 
+export const userOrganisations = ({ owner_id }) =>{
+  return db.organisation.findMany({where: {owner_id : owner_id}});
+}
+
 export const Organisation = {
   User_Organisation: (_obj, { root }) =>
     db.organisation.findUnique({ where: { id: root.id } }).User_Organisation(),
