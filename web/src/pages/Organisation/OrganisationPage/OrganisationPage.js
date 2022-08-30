@@ -1,7 +1,7 @@
 import OrganisationCell from 'src/components/Organisation/OrganisationCell'
 
-const OrganisationPage = ({ id }) => {
-  return <OrganisationCell id={id} />
+const OrganisationPage = ({ owner_id }) => {
+  return <OrganisationCell owner_id={owner_id} />
 }
 
 export default OrganisationPage
