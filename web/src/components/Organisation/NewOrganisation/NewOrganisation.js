@@ -1,3 +1,4 @@
+import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
@@ -13,6 +14,9 @@ const CREATE_ORGANISATION_MUTATION = gql`
 `
 
 const NewOrganisation = () => {
+
+  const { isAuthenticated, currentUser, logOut } = useAuth()
+
   const [createOrganisation, { loading, error }] = useMutation(
     CREATE_ORGANISATION_MUTATION,
     {
@@ -27,7 +31,8 @@ const NewOrganisation = () => {
   )
 
   const onSave = (input) => {
-    createOrganisation({ variables: { input } })
+
+    createOrganisation({ variables: { input, currentUser } })
   }
 
   return (
@@ -36,7 +41,7 @@ const NewOrganisation = () => {
         <h2 className="rw-heading rw-heading-secondary">New Organisation</h2>
       </header>
       <div className="rw-segment-main">
-        <OrganisationForm onSave={onSave} loading={loading} error={error} />
+        <OrganisationForm onSave={onSave} loading={loading} error={error} currentUser={currentUser} />
       </div>
     </div>
   )

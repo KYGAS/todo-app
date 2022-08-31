@@ -1,3 +1,4 @@
+import { useAuth } from '@redwoodjs/auth';
 import {
   Form,
   FormError,
@@ -9,7 +10,12 @@ import {
 } from '@redwoodjs/forms'
 
 const OrganisationForm = (props) => {
+
+
   const onSubmit = (data) => {
+    console.log(props);
+    console.log(props.currentUser);
+    data.owner_id = props.currentUser.id;
     props.onSave(data, props?.organisation?.id)
   }
 
@@ -40,24 +46,6 @@ const OrganisationForm = (props) => {
         />
 
         <FieldError name="name" className="rw-field-error" />
-
-        <Label
-          name="owner_id"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Owner id
-        </Label>
-
-        <NumberField
-          name="owner_id"
-          defaultValue={props.organisation?.owner_id}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
-
-        <FieldError name="owner_id" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">
