@@ -6,7 +6,7 @@ const PageHeaderLayout = ({ children }) => {
 
   let isLoggedIn = isAuthenticated ? (
     <div>
-      <span className="logged-user">Logged in as {currentUser.id}</span>{' '}
+      <span className="logged-user">Logged in as {currentUser?.id}</span>{' '}
       <button type="button" onClick={logOut}>Logout</button>
     </div>
   ) : (
