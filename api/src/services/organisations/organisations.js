@@ -1,7 +1,8 @@
 import { db } from 'src/lib/db'
 
-export const organisations = () => {
+export const organisations = ({currentUser}) => {
   console.log("Test1");
+  console.log(currentUser);
   return db.organisation.findMany()
 }
 

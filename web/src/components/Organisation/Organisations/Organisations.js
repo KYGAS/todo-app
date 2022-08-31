@@ -54,6 +54,7 @@ const checkboxInputTag = (checked) => {
 }
 
 const OrganisationsList = ({ organisations }) => {
+
   const [deleteOrganisation] = useMutation(DELETE_ORGANISATION_MUTATION, {
     onCompleted: () => {
       toast.success('Organisation deleted')
@@ -86,7 +87,9 @@ const OrganisationsList = ({ organisations }) => {
           </tr>
         </thead>
         <tbody>
-          {organisations.map((organisation) => (
+          {organisations.map((organisation) => { organisation = organisation.organisation;
+          console.log(organisation);
+            return (
             <tr key={organisation.id}>
               <td>{truncate(organisation.id)}</td>
               <td>{truncate(organisation.name)}</td>
@@ -118,7 +121,7 @@ const OrganisationsList = ({ organisations }) => {
                 </nav>
               </td>
             </tr>
-          ))}
+          )})}
         </tbody>
       </table>
     </div>

@@ -1,13 +1,19 @@
+import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
 
 import Organisations from 'src/components/Organisation/Organisations'
 
 export const QUERY = gql`
   query FindOrganisations {
-    organisations {
+    users{
       id
-      name
-      owner_id
+      User_Organisation {
+        organisation {
+          id
+          name
+          owner_id
+        }
+      }
     }
   }
 `
@@ -29,6 +35,6 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ organisations }) => {
-  return <Organisations organisations={organisations} />
+export const Success = ({ users }) => {
+  return <Organisations organisations={users[useAuth().currentUser.id-1]['User_Organisation']} />
 }
