@@ -15,16 +15,19 @@ export const organisation = ({ id }) => {
 
 export const createOrganisation = ({ input, currentUser }) => {
 
-
-  db.organisation.count().then(_=>{
-      db.userOnOrganisation.create({
-        data : {
-          user_id : input.owner_id,
-          organisation_id : _+1
-        }
-      }).then(_=>{
-        console.log("SUCCESS");
-      })
+  db.organisation.findMany().then(_=>{
+    let ID = 0;
+    for( let org of _ ){
+      ID = org.id
+    }
+    db.userOnOrganisation.create({
+      data : {
+        user_id : input.owner_id,
+        organisation_id : ID+1
+      }
+    }).then(_=>{
+      console.log("SUCCESS");
+    })
   })
 
   // db.userOnOrganisation.create({
