@@ -8,8 +8,8 @@ export const schema = gql`
   }
 
   type Query {
-    userOnOrganisations: [UserOnOrganisation!]! @requireAuth
-    userOnOrganisation(id: Int!): UserOnOrganisation @requireAuth
+    userOnOrganisations: [UserOnOrganisation!]! @skipAuth
+    userOnOrganisation(id: Int!): UserOnOrganisation @skipAuth
   }
 
   input CreateUserOnOrganisationInput {
