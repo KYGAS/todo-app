@@ -55,10 +55,16 @@ export const updateOrganisation = ({ id, input }) => {
 }
 
 export const deleteOrganisation = ({ id }) => {
-  console.log("Test5");
-  return db.organisation.delete({
-    where: { id },
+
+  return db.userOnOrganisation.deleteMany({
+    where: { organisation_id : id }
+  }).then(_=>{
+    console.log("Deleted link!");
+    return db.organisation.delete({
+      where: { id },
+    })
   })
+
 }
 
 export const userOrganisations = () =>{
