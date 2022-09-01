@@ -62,6 +62,8 @@ export const deleteOrganisation = ({ id }) => {
     console.log("Deleted link!");
     return db.organisation.delete({
       where: { id },
+    }).then(_=>{
+      return db.organisation.findFirst()
     })
   })
 
