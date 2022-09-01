@@ -30,17 +30,6 @@ export const createOrganisation = ({ input, currentUser }) => {
     })
   })
 
-  // db.userOnOrganisation.create({
-  //   data : {
-  //     user_id : input.owner_id,
-  //     organisation_id :
-  //   }
-  // }).then(_=>{
-  //   console.log(_);
-  // }).catch(_=>{
-  //   console.log(_);
-  // })
-
   return db.organisation.create({
     data: input,
   })
