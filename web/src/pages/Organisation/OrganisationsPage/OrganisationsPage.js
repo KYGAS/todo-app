@@ -1,8 +1,8 @@
 import OrganisationsCell from 'src/components/Organisation/OrganisationsCell'
 
-const OrganisationsPage = ({owner_id}) => {
+const OrganisationsPage = () => {
   return (
-    <OrganisationsCell owner_id={owner_id} />
+    <OrganisationsCell  />
   )
 }
 

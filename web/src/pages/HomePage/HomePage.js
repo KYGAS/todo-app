@@ -18,7 +18,7 @@ const HomePage = () => {
   ):(
     <div>
       <p>
-        <Link to={routes.organisations( { owner_id : currentUser.id} )}>Organisations</Link>
+        <Link to={routes.organisations()}>Organisations</Link>
       </p>
     </div>
   )
