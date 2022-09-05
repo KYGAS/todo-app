@@ -43,6 +43,13 @@ export const updateOrganisation = ({ id, input }) => {
   })
 }
 
+
+export const updateOrganisationAddUser = ({id, input}) => {
+  return db.userOnOrganisation.create({
+    data : input
+  })
+}
+
 export const deleteOrganisation = ({ id }) => {
 
   return db.userOnOrganisation.deleteMany({
