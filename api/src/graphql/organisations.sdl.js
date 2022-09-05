@@ -21,6 +21,10 @@ export const schema = gql`
     name: String
     owner_id: Int
   }
+  input UpdateOrganisationAddUserInput {
+    user_id : Int
+    organisation_id : Int
+  }
 
   type Mutation {
     createOrganisation(input: CreateOrganisationInput!): Organisation!
@@ -29,6 +33,8 @@ export const schema = gql`
       id: Int!
       input: UpdateOrganisationInput!
     ): Organisation! @requireAuth
+    updateOrganisationAddUser( input: UpdateOrganisationAddUserInput! ): Organisation!
+     @requireAuth
     deleteOrganisation(id: Int!): Organisation! @requireAuth
   }
 `
