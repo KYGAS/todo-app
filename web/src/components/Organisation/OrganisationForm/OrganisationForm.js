@@ -13,9 +13,7 @@ const OrganisationForm = (props) => {
 
 
   const onSubmit = (data) => {
-    console.log(props);
-    console.log(props.currentUser);
-    data.owner_id = props.currentUser.id;
+    data.owner_id = props.currentUser?.id || props.organisation.owner_id;
     props.onSave(data, props?.organisation?.id)
   }
 
