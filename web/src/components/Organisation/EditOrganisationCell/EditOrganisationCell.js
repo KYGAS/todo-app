@@ -4,6 +4,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import OrganisationForm from 'src/components/Organisation/OrganisationForm'
+import OrganisationFormAddUser from '../OrganisationFormAddUser/OrganisationFormAddUser'
 
 export const QUERY = gql`
   query EditOrganisationById($id: Int!) {
@@ -23,6 +24,16 @@ const UPDATE_ORGANISATION_MUTATION = gql`
       id
       name
       owner_id
+    }
+  }
+`
+
+const UPDATE_ORGANISATION_ADD_USER_MUTATION = gql`
+  mutation UpdateOrganisationAddUserMutation(
+    $input: UpdateOrganisationAddUserInput!
+  ) {
+    updateOrganisationAddUser(input: $input) {
+      id
     }
   }
 `
@@ -47,8 +58,24 @@ export const Success = ({ organisation }) => {
     }
   )
 
+  const [updateOrganisationAddUser, dataObject] = useMutation(
+    UPDATE_ORGANISATION_ADD_USER_MUTATION,
+    {
+      onCompleted: () => {
+        toast.success('User Added')
+        navigate(routes.organisations())
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
   const onSave = (input, id) => {
     updateOrganisation({ variables: { id, input } })
+  }
+  const onAddUser = (input, id) => {
+    updateOrganisationAddUser({ variables: { id, input } })
   }
 
   return (
@@ -64,6 +91,14 @@ export const Success = ({ organisation }) => {
           onSave={onSave}
           error={error}
           loading={loading}
+        />
+      </div>
+      <div className="rw-segment-main">
+        <OrganisationFormAddUser
+          organisation={organisation}
+          onSave={onAddUser}
+          error={dataObject.error}
+          loading={dataObject.loading}
         />
       </div>
     </div>
