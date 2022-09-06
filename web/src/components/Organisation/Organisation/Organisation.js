@@ -3,10 +3,11 @@ import humanize from 'humanize-string'
 import { Link, routes, navigate } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
+import { useAuth } from '@redwoodjs/auth'
 
 const DELETE_ORGANISATION_MUTATION = gql`
-  mutation DeleteOrganisationMutation($id: Int!) {
-    deleteOrganisation(id: $id) {
+  mutation DeleteOrganisationMutation($id: Int!, $logged_id: Int!) {
+    deleteOrganisation(id: $id, logged_id: $logged_id) {
       id
     }
   }
@@ -46,6 +47,9 @@ const checkboxInputTag = (checked) => {
 }
 
 const Organisation = ({ organisation }) => {
+
+  let logged_userId = useAuth().currentUser.id
+
   const [deleteOrganisation] = useMutation(DELETE_ORGANISATION_MUTATION, {
     onCompleted: () => {
       toast.success('Organisation deleted')
@@ -56,9 +60,9 @@ const Organisation = ({ organisation }) => {
     },
   })
 
-  const onDeleteClick = (id) => {
+  const onDeleteClick = (id, logged_id) => {
     if (confirm('Are you sure you want to delete organisation ' + id + '?')) {
-      deleteOrganisation({ variables: { id } })
+      deleteOrganisation({ variables: { id, logged_id } })
     }
   }
 
@@ -97,7 +101,7 @@ const Organisation = ({ organisation }) => {
         <button
           type="button"
           className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(organisation.id)}
+          onClick={() => onDeleteClick(organisation.id, logged_userId)}
         >
           Delete
         </button>
