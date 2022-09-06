@@ -50,17 +50,35 @@ export const updateOrganisationAddUser = ({id, input}) => {
   })
 }
 
-export const deleteOrganisation = ({ id }) => {
+export const deleteOrganisation = (input, arg2, arg3) => {
 
-  return db.userOnOrganisation.deleteMany({
-    where: { organisation_id : id }
-  }).then(_=>{
-    console.log("Deleted link!");
-    return db.organisation.delete({
-      where: { id },
-    }).then(_=>{
-      return db.organisation.findFirst()
-    })
+  return db.organisation.findUnique({
+    where : {
+      id : input.id
+    }
+  }).then( org =>{
+    if(org.owner_id == input.logged_id){
+      return db.userOnOrganisation.deleteMany({
+        where: { organisation_id : input.id }
+      }).then(_=>{
+        console.log("CLEARED LINKS");
+        return db.organisation.delete({
+          where:{
+            id: org.id
+          }
+        })
+      })
+    }else{
+      console.log("DELETED FROM ORG");
+      return db.userOnOrganisation.deleteMany({
+        where:{
+          organisation_id: input.id,
+          user_id: input.logged_id
+        }
+      }).then(_=>{
+        return db.organisation.findFirst()
+      })
+    }
   })
 
 }
