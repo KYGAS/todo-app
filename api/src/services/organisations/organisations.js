@@ -1,13 +1,11 @@
 import { db } from 'src/lib/db'
 
 export const organisations = ({currentUser}) => {
-  console.log("Test1");
   console.log(currentUser);
   return db.organisation.findMany()
 }
 
 export const organisation = ({ id }) => {
-  console.log("Test2");
   return db.organisation.findUnique({
     where: { id },
   })
@@ -26,7 +24,6 @@ export const createOrganisation = ({ input, currentUser }) => {
         organisation_id : ID+1
       }
     }).then(_=>{
-      console.log("SUCCESS");
     })
   })
 
@@ -36,7 +33,6 @@ export const createOrganisation = ({ input, currentUser }) => {
 }
 
 export const updateOrganisation = ({ id, input }) => {
-  console.log("Test4");
   return db.organisation.update({
     data: input,
     where: { id },
@@ -61,7 +57,6 @@ export const deleteOrganisation = (input, arg2, arg3) => {
       return db.userOnOrganisation.deleteMany({
         where: { organisation_id : input.id }
       }).then(_=>{
-        console.log("CLEARED LINKS");
         return db.organisation.delete({
           where:{
             id: org.id
@@ -69,7 +64,6 @@ export const deleteOrganisation = (input, arg2, arg3) => {
         })
       })
     }else{
-      console.log("DELETED FROM ORG");
       return db.userOnOrganisation.deleteMany({
         where:{
           organisation_id: input.id,
