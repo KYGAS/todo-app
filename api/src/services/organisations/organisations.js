@@ -13,23 +13,26 @@ export const organisation = ({ id }) => {
 
 export const createOrganisation = ({ input, currentUser }) => {
 
-  db.organisation.findMany().then(_=>{
+  return db.organisation.findMany().then(_=>{
     let ID = 0;
     for( let org of _ ){
       ID = org.id
     }
-    db.userOnOrganisation.create({
-      data : {
-        user_id : input.owner_id,
-        organisation_id : ID+1
-      }
+
+    return db.organisation.create({
+      data: input,
     }).then(_=>{
+      return db.userOnOrganisation.create({
+        data : {
+          user_id : input.owner_id,
+          organisation_id : ID+1
+        }
+      }).then(_=>{
+        return db.organisation.findFirst();
+      })
     })
   })
 
-  return db.organisation.create({
-    data: input,
-  })
 }
 
 export const updateOrganisation = ({ id, input }) => {
