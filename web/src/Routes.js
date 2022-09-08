@@ -75,12 +75,15 @@ const Routes = () => {
             <Route path="/projects/{id:Int}" page={ProjectProjectPage} name="project" />
             <Route path="/projects" page={ProjectProjectsPage} name="projects" />
           </Set>
+
           <Set wrap={OrganisationsLayout}>
             <Route path="/organisations" page={OrganisationOrganisationsPage} name="organisations" />
           </Set>
+
           <Route path="/organisations/new" page={OrganisationNewOrganisationPage} name="newOrganisation" />
           <Route path="/organisations/{id:Int}/edit" page={OrganisationEditOrganisationPage} name="editOrganisation" />
           <Route path="/organisations/{id:Int}" page={OrganisationOrganisationPage} name="organisation" />
+
           <Set wrap={UsersLayout}>
             <Route path="/users/new" page={UserNewUserPage} name="newUser" />
             <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />
