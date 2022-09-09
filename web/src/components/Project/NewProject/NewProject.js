@@ -18,7 +18,7 @@ const NewProject = () => {
     {
       onCompleted: () => {
         toast.success('Project created')
-        navigate(routes.projects())
+        navigate(routes.organisations())
       },
       onError: (error) => {
         toast.error(error.message)
