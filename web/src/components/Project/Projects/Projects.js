@@ -85,7 +85,9 @@ const ProjectsList = ({ projects }) => {
           </tr>
         </thead>
         <tbody>
-          {projects.map((project) => (
+          {projects.map((project) => {
+            project = project.project;
+            return (
             <tr key={project.id}>
               <td>{truncate(project.id)}</td>
               <td>{truncate(project.name)}</td>
@@ -116,7 +118,7 @@ const ProjectsList = ({ projects }) => {
                 </nav>
               </td>
             </tr>
-          ))}
+          )})}
         </tbody>
       </table>
     </div>
