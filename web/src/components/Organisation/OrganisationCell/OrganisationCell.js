@@ -23,9 +23,7 @@ export const Success = ({ organisation }) => {
   return <>
     <Organisation organisation={organisation} />
     <hr></hr>
-    <p>
-      <ProjectsCell />
-    </p>
+      <ProjectsCell organisation={organisation}/>
 
   </>
 }
