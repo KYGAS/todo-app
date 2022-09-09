@@ -4,9 +4,14 @@ import Projects from 'src/components/Project/Projects'
 
 export const QUERY = gql`
   query FindProjects {
-    projects {
+    linkedProjects : organisations {
       id
-      name
+      Organisation_Project {
+        project {
+          id
+          name
+        }
+      }
     }
   }
 `
@@ -28,6 +33,18 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ projects }) => {
+export const Success = ({ linkedProjects, organisation }) => {
+
+  let projects = [];
+
+  for(let org of linkedProjects){
+    if(org.id == organisation.id){
+      projects = org;
+      break;
+    }
+  }
+
+  projects = projects.Organisation_Project
+
   return <Projects projects={projects} />
 }
