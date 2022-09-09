@@ -1,4 +1,5 @@
 import Organisation from 'src/components/Organisation/Organisation'
+import ProjectsCell from 'src/components/Project/ProjectsCell'
 
 export const QUERY = gql`
   query FindOrganisationById($id: Int!) {
@@ -19,5 +20,12 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ organisation }) => {
-  return <Organisation organisation={organisation} />
+  return <>
+    <Organisation organisation={organisation} />
+    <hr></hr>
+    <p>
+      <ProjectsCell />
+    </p>
+
+  </>
 }
