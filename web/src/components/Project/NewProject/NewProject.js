@@ -5,14 +5,14 @@ import { toast } from '@redwoodjs/web/toast'
 import ProjectForm from 'src/components/Project/ProjectForm'
 
 const CREATE_PROJECT_MUTATION = gql`
-  mutation CreateProjectMutation($input: CreateProjectInput!) {
-    createProject(input: $input) {
+  mutation CreateProjectMutation($input: CreateProjectInput!, $org_id: Int!) {
+    createProject(input: $input, org_id: $org_id) {
       id
     }
   }
 `
 
-const NewProject = () => {
+const NewProject = ({id}) => {
   const [createProject, { loading, error }] = useMutation(
     CREATE_PROJECT_MUTATION,
     {
@@ -27,7 +27,7 @@ const NewProject = () => {
   )
 
   const onSave = (input) => {
-    createProject({ variables: { input } })
+    createProject({ variables: { input, org_id : parseInt(id) } })
   }
 
   return (
