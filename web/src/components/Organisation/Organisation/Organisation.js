@@ -93,6 +93,12 @@ const Organisation = ({ organisation }) => {
       </div>
       <nav className="rw-button-group">
         <Link
+          to={routes.newProject({ id: organisation.id })}
+          className="rw-button rw-button-blue"
+        >
+          Add Project
+        </Link>
+        <Link
           to={routes.editOrganisation({ id: organisation.id })}
           className="rw-button rw-button-blue"
         >
