@@ -20,7 +20,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createProject(input: CreateProjectInput!): Project! @requireAuth
+    createProject(input: CreateProjectInput!, org_id: Int!): Project! @requireAuth
     updateProject(id: Int!, input: UpdateProjectInput!): Project! @requireAuth
     deleteProject(id: Int!): Project! @requireAuth
   }
