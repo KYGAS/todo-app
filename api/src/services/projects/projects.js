@@ -10,9 +10,19 @@ export const project = ({ id }) => {
   })
 }
 
-export const createProject = ({ input }) => {
+export const createProject = ({ input, org_id }) => {
+
   return db.project.create({
     data: input,
+  }).then( newProject=>{
+    return db.organisationOnProject.create({
+      data : {
+        project_id : newProject.id,
+        organisation_id : org_id
+      }
+    }).then(_=>{
+      return db.project.findFirst();
+    })
   })
 }
 
