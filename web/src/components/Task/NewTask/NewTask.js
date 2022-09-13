@@ -5,14 +5,14 @@ import { toast } from '@redwoodjs/web/toast'
 import TaskForm from 'src/components/Task/TaskForm'
 
 const CREATE_TASK_MUTATION = gql`
-  mutation CreateTaskMutation($input: CreateTaskInput!) {
-    createTask(input: $input) {
+  mutation CreateTaskMutation($input: CreateTaskInput!, $project_id: Int!) {
+    createTask(input: $input, project_id: $project_id) {
       id
     }
   }
 `
 
-const NewTask = () => {
+const NewTask = ({id}) => {
   const [createTask, { loading, error }] = useMutation(CREATE_TASK_MUTATION, {
     onCompleted: () => {
       toast.success('Task created')
@@ -24,7 +24,7 @@ const NewTask = () => {
   })
 
   const onSave = (input) => {
-    createTask({ variables: { input } })
+    createTask({ variables: { input, project_id: parseInt(id) } })
   }
 
   return (
