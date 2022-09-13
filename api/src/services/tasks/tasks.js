@@ -10,7 +10,22 @@ export const task = ({ id }) => {
   })
 }
 
-export const createTask = ({ input }) => {
+export const createTask = ({ input, project_id }) => {
+
+  return db.task.create({
+    data: input,
+  }).then( newTask=>{
+    return db.projectOnTask.create({
+      data: {
+        project_id: project_id,
+        task_id: newTask.id
+      }
+    }).then(_=>{
+      return db.project.findFirst();
+    })
+  })
+
+
   return db.task.create({
     data: input,
   })
