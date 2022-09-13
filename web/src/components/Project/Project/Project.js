@@ -49,7 +49,7 @@ const Project = ({ project }) => {
   const [deleteProject] = useMutation(DELETE_PROJECT_MUTATION, {
     onCompleted: () => {
       toast.success('Project deleted')
-      navigate(routes.projects())
+      navigate(routes.organisations())
     },
     onError: (error) => {
       toast.error(error.message)
