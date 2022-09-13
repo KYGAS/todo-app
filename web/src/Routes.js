@@ -64,17 +64,20 @@ const Routes = () => {
             <Route path="/messages" page={MessageMessagesPage} name="messages" />
           </Set>
           <Set wrap={TasksLayout}>
-            <Route path="/tasks/new" page={TaskNewTaskPage} name="newTask" />
-            <Route path="/tasks/{id:Int}/edit" page={TaskEditTaskPage} name="editTask" />
-            <Route path="/tasks/{id:Int}" page={TaskTaskPage} name="task" />
             <Route path="/tasks" page={TaskTasksPage} name="tasks" />
           </Set>
+
+          <Route path="/tasks/new" page={TaskNewTaskPage} name="newTask" />
+          <Route path="/tasks/{id:Int}/edit" page={TaskEditTaskPage} name="editTask" />
+          <Route path="/tasks/{id:Int}" page={TaskTaskPage} name="task" />
+
           <Set wrap={ProjectsLayout}>
-            <Route path="/projects/new" page={ProjectNewProjectPage} name="newProject" />
-            <Route path="/projects/{id:Int}/edit" page={ProjectEditProjectPage} name="editProject" />
-            <Route path="/projects/{id:Int}" page={ProjectProjectPage} name="project" />
             <Route path="/projects" page={ProjectProjectsPage} name="projects" />
           </Set>
+
+          <Route path="/projects/new" page={ProjectNewProjectPage} name="newProject" />
+          <Route path="/projects/{id:Int}/edit" page={ProjectEditProjectPage} name="editProject" />
+          <Route path="/projects/{id:Int}" page={ProjectProjectPage} name="project" />
 
           <Set wrap={OrganisationsLayout}>
             <Route path="/organisations" page={OrganisationOrganisationsPage} name="organisations" />
