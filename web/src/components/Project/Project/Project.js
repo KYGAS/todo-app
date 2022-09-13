@@ -85,6 +85,12 @@ const Project = ({ project }) => {
       </div>
       <nav className="rw-button-group">
         <Link
+          to={routes.newTask({ id: project.id })}
+          className="rw-button rw-button-blue"
+        >
+          Add Task
+        </Link>
+        <Link
           to={routes.editProject({ id: project.id })}
           className="rw-button rw-button-blue"
         >
