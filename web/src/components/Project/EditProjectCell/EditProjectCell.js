@@ -34,7 +34,7 @@ export const Success = ({ project }) => {
     {
       onCompleted: () => {
         toast.success('Project updated')
-        navigate(routes.projects())
+        navigate(routes.organisations())
       },
       onError: (error) => {
         toast.error(error.message)
