@@ -34,8 +34,14 @@ export const updateProject = ({ id, input }) => {
 }
 
 export const deleteProject = ({ id }) => {
-  return db.project.delete({
-    where: { id },
+  return db.organisationOnProject.deleteMany({
+    where:{
+      project_id : id
+    }
+  }).then(_=>{
+    return db.project.delete({
+      where: { id },
+    })
   })
 }
 
