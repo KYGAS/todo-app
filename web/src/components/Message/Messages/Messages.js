@@ -86,7 +86,9 @@ const MessagesList = ({ messages }) => {
           </tr>
         </thead>
         <tbody>
-          {messages.map((message) => (
+          {messages.map((message) => {
+            message = message.message;
+            return (
             <tr key={message.id}>
               <td>{truncate(message.id)}</td>
               <td>{truncate(message.creator_id)}</td>
@@ -118,7 +120,7 @@ const MessagesList = ({ messages }) => {
                 </nav>
               </td>
             </tr>
-          ))}
+          )})}
         </tbody>
       </table>
     </div>
