@@ -4,11 +4,16 @@ import Tasks from 'src/components/Task/Tasks'
 
 export const QUERY = gql`
   query FindTasks {
-    tasks {
+    linkedTasks : projects {
       id
-      name
-      status
-      responsible_person_id
+      Project_Task {
+        task {
+          id
+          name
+          status
+          responsible_person_id
+        }
+      }
     }
   }
 `
@@ -30,6 +35,18 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ tasks }) => {
+export const Success = ({ linkedTasks, project }) => {
+
+  console.log(linkedTasks);
+
+  let tasks = [];
+
+  for(let tasksObj of linkedTasks){
+    if(tasksObj.id == project.id){
+      tasks = tasksObj;
+      break;
+    }
+  }
+  tasks = tasks.Project_Task;
   return <Tasks tasks={tasks} />
 }
