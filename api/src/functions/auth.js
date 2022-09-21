@@ -16,6 +16,21 @@ export const handler = async (event, context) => {
     // address in a toast message so the user will know it worked and where
     // to look for the email.
     handler: (user) => {
+      // Require:
+      var postmark = require("postmark");
+
+      // Send an email:
+      var client = new postmark.ServerClient("af1f43a3-9a78-4548-94d8-9e3195175da8");
+
+      client.sendEmail({
+        "From": "aca@stuntcoders.com",
+        "To": "aca@stuntcoders.com",
+        "Subject": "Hello from Todo-App!",
+        "HtmlBody": "<strong>Hello</strong> dear Todo-App user. Your reset code is : " + user.resetToken,
+        "TextBody": "Hello from Postmark!",
+        "MessageStream": "outbound"
+      });
+
       return user
     },
 
