@@ -93,6 +93,12 @@ const Task = ({ task }) => {
       </div>
       <nav className="rw-button-group">
         <Link
+          to={routes.newMessage({ id: task.id })}
+          className="rw-button rw-button-blue"
+        >
+          Add Message
+        </Link>
+        <Link
           to={routes.editTask({ id: task.id })}
           className="rw-button rw-button-blue"
         >
