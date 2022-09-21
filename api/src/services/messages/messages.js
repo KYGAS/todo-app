@@ -10,7 +10,22 @@ export const message = ({ id }) => {
   })
 }
 
-export const createMessage = ({ input }) => {
+export const createMessage = ({ input, task_id }) => {
+
+  return db.message.create({
+    data: input
+  }).then( newMessage =>{
+    return db.taskOnMessage.create({
+      data: {
+        task_id: task_id,
+        message_id: newMessage.id
+      }
+    }).then(_=>{
+      return db.message.findFirst();
+    })
+  })
+
+
   return db.message.create({
     data: input,
   })
