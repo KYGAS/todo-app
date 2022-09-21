@@ -1,3 +1,5 @@
+import MessageCell from 'src/components/Message/MessageCell'
+import MessagesCell from 'src/components/Message/MessagesCell'
 import Task from 'src/components/Task/Task'
 
 export const QUERY = gql`
@@ -20,5 +22,8 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ task }) => {
-  return <Task task={task} />
+  return <>
+    <Task task={task} />
+    <MessagesCell task={task} />
+  </>
 }
