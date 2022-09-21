@@ -5,14 +5,14 @@ import { toast } from '@redwoodjs/web/toast'
 import MessageForm from 'src/components/Message/MessageForm'
 
 const CREATE_MESSAGE_MUTATION = gql`
-  mutation CreateMessageMutation($input: CreateMessageInput!) {
-    createMessage(input: $input) {
+  mutation CreateMessageMutation($input: CreateMessageInput!, $task_id: Int!) {
+    createMessage(input: $input, task_id: $task_id) {
       id
     }
   }
 `
 
-const NewMessage = () => {
+const NewMessage = ({id}) => {
   const [createMessage, { loading, error }] = useMutation(
     CREATE_MESSAGE_MUTATION,
     {
@@ -27,7 +27,7 @@ const NewMessage = () => {
   )
 
   const onSave = (input) => {
-    createMessage({ variables: { input } })
+    createMessage({ variables: { input, task_id: parseInt(id) } })
   }
 
   return (
