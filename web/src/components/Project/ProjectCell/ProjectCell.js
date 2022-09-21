@@ -1,4 +1,5 @@
 import Project from 'src/components/Project/Project'
+import TasksCell from 'src/components/Task/TasksCell'
 
 export const QUERY = gql`
   query FindProjectById($id: Int!) {
@@ -18,5 +19,10 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ project }) => {
-  return <Project project={project} />
+  return <>
+    <Project project={project} />
+    <hr></hr>
+      <TasksCell project={project}/>
+  </>
+
 }
