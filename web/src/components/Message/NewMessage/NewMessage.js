@@ -18,7 +18,7 @@ const NewMessage = ({id}) => {
     {
       onCompleted: () => {
         toast.success('Message created')
-        navigate(routes.messages())
+        navigate(routes.organisations())
       },
       onError: (error) => {
         toast.error(error.message)
