@@ -22,7 +22,7 @@ export const schema = gql`
   }
 
   type Mutation {
-    createMessage(input: CreateMessageInput!): Message! @requireAuth
+    createMessage(input: CreateMessageInput!, task_id: Int!): Message! @requireAuth
     updateMessage(id: Int!, input: UpdateMessageInput!): Message! @requireAuth
     deleteMessage(id: Int!): Message! @requireAuth
   }
