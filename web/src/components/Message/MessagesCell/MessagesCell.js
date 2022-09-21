@@ -4,10 +4,15 @@ import Messages from 'src/components/Message/Messages'
 
 export const QUERY = gql`
   query FindMessages {
-    messages {
+    linkedMessages : tasks {
       id
-      creator_id
-      message
+      Task_Message {
+        message {
+          id
+          creator_id
+          message
+        }
+      }
     }
   }
 `
@@ -29,6 +34,18 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ messages }) => {
+export const Success = ({ linkedMessages, task }) => {
+
+  let messages = [];
+
+  for(let messagesObj of linkedMessages){
+    if(messagesObj.id == task.id){
+      messages = messagesObj;
+      break;
+    }
+  }
+
+  messages = messages.Task_Message;
+
   return <Messages messages={messages} />
 }
