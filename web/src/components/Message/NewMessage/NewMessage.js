@@ -13,6 +13,15 @@ const CREATE_MESSAGE_MUTATION = gql`
   }
 `
 
+
+const EMAIL_USER_MUTATION = gql`
+  mutation EmailUserMutation($id: String!) {
+    emailUser(id: $id) {
+      id
+    }
+  }
+`
+
 const NewMessage = ({id}) => {
   const [createMessage, { loading, error }] = useMutation(
     CREATE_MESSAGE_MUTATION,
@@ -27,14 +36,23 @@ const NewMessage = ({id}) => {
     }
   )
 
+
+  const [emailUser] = useMutation(EMAIL_USER_MUTATION, {
+    onCompleted: () => {
+      toast.success('Emails sent')
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
   const onSave = (input) => {
     console.log("Hi");
-    notifyMail(input.emails).then(_=>{
-      console.log(input);
-      delete input.emails;
-      console.log(input);
-      createMessage({ variables: { input, task_id: parseInt(id) } })
-    });
+    emailUser({ variables: { id: '3'} })
+    console.log(input);
+    delete input.emails;
+    console.log(input);
+    createMessage({ variables: { input, task_id: parseInt(id) } })
   }
 
   return (
