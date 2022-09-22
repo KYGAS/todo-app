@@ -1,3 +1,4 @@
+import { useAuth } from '@redwoodjs/auth'
 import {
   Form,
   FormError,
@@ -9,7 +10,9 @@ import {
 } from '@redwoodjs/forms'
 
 const MessageForm = (props) => {
+  let id = useAuth().currentUser.id;
   const onSubmit = (data) => {
+    data.creator_id = id;
     props.onSave(data, props?.message?.id)
   }
 
@@ -22,24 +25,6 @@ const MessageForm = (props) => {
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
         />
-
-        <Label
-          name="creator_id"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Creator id
-        </Label>
-
-        <NumberField
-          name="creator_id"
-          defaultValue={props.message?.creator_id}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
-
-        <FieldError name="creator_id" className="rw-field-error" />
 
         <Label
           name="message"
