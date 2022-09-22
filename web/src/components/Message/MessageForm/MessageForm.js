@@ -57,7 +57,25 @@ const MessageForm = (props) => {
           validation={{ required: true }}
         />
 
-        <FieldError name="message" className="rw-field-error" />
+        <FieldError name="emails" className="rw-field-error" />
+
+        <Label
+          name="emails"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Emails to notify about the message : ( separate by , )
+        </Label>
+
+        <TextField
+          name="emails"
+          defaultValue={props.message?.emails}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
+
+        <FieldError name="emails" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">
