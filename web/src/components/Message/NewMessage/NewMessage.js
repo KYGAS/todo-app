@@ -3,7 +3,6 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import MessageForm from 'src/components/Message/MessageForm'
-import { notifyMail } from 'api/src/functions/mailing'
 
 const CREATE_MESSAGE_MUTATION = gql`
   mutation CreateMessageMutation($input: CreateMessageInput!, $task_id: Int!) {
