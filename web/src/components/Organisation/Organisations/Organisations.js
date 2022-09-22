@@ -5,10 +5,11 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/Organisation/OrganisationsCell'
+import { useAuth } from '@redwoodjs/auth'
 
 const DELETE_ORGANISATION_MUTATION = gql`
-  mutation DeleteOrganisationMutation($id: Int!) {
-    deleteOrganisation(id: $id) {
+  mutation DeleteOrganisationMutation($id: Int!, $logged_id: Int!) {
+    deleteOrganisation(id: $id, logged_id: $logged_id) {
       id
     }
   }
@@ -68,10 +69,10 @@ const OrganisationsList = ({ organisations }) => {
     refetchQueries: [{ query: QUERY }],
     awaitRefetchQueries: true,
   })
-
+  let logged_user = useAuth().currentUser.id;
   const onDeleteClick = (id) => {
     if (confirm('Are you sure you want to delete organisation ' + id + '?')) {
-      deleteOrganisation({ variables: { id } })
+      deleteOrganisation({ variables: { id, logged_id : logged_user } })
     }
   }
 

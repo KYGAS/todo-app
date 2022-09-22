@@ -60,10 +60,16 @@ export const deleteOrganisation = (input, arg2, arg3) => {
       return db.userOnOrganisation.deleteMany({
         where: { organisation_id : input.id }
       }).then(_=>{
-        return db.organisation.delete({
-          where:{
-            id: org.id
+        return db.organisationOnProject.deleteMany({
+          where : {
+            organisation_id : input.id
           }
+        }).then(_=>{
+          return db.organisation.delete({
+            where:{
+              id: org.id
+            }
+          })
         })
       })
     }else{
