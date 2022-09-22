@@ -20,7 +20,7 @@ export const handler = async (event, context) => {
       var postmark = require("postmark");
 
       // Send an email:
-      var client = new postmark.ServerClient(process.env.POSTMARK_KEY);
+      var client = new postmark.ServerClient('735360f3-82d0-4e10-8634-571baadcab6b');
 
       client.sendEmail({
         "From": "aca@stuntcoders.com",
