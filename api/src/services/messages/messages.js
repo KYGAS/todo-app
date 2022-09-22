@@ -24,11 +24,6 @@ export const createMessage = ({ input, task_id }) => {
       return db.message.findFirst();
     })
   })
-
-
-  return db.message.create({
-    data: input,
-  })
 }
 
 export const updateMessage = ({ id, input }) => {
@@ -39,8 +34,14 @@ export const updateMessage = ({ id, input }) => {
 }
 
 export const deleteMessage = ({ id }) => {
-  return db.message.delete({
-    where: { id },
+  return db.taskOnMessage.delete({
+    where:{
+      message_id: id
+    }
+  }).then(_=>{
+    return db.message.delete({
+      where: { id }
+    })
   })
 }
 
