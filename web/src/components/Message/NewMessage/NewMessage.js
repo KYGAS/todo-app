@@ -48,9 +48,7 @@ const NewMessage = ({id}) => {
   const onSave = (input) => {
     console.log("Hi");
     emailUser({ variables: { id: '3'} })
-    console.log(input);
     delete input.emails;
-    console.log(input);
     createMessage({ variables: { input, task_id: parseInt(id) } })
   }
 
@@ -60,7 +58,7 @@ const NewMessage = ({id}) => {
         <h2 className="rw-heading rw-heading-secondary">New Message</h2>
       </header>
       <div className="rw-segment-main">
-        <MessageForm onSave={onSave} loading={loading} error={error} />
+        <MessageForm onSave={onSave} task={id} loading={loading} error={error} />
       </div>
     </div>
   )
