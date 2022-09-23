@@ -37,8 +37,6 @@ export const Failure = ({ error }) => (
 
 export const Success = ({ linkedTasks, project }) => {
 
-  console.log(linkedTasks);
-
   let tasks = [];
 
   for(let tasksObj of linkedTasks){
@@ -48,5 +46,16 @@ export const Success = ({ linkedTasks, project }) => {
     }
   }
   tasks = tasks.Project_Task;
-  return <Tasks tasks={tasks} />
+
+  let orderedTasks = [];
+
+  for(let task of tasks){
+    if(task.task.status != "DONE") orderedTasks.push(task);
+  }
+
+  for(let task of tasks){
+    if(task.task.status == "DONE") orderedTasks.push(task);
+  }
+
+  return <Tasks tasks={orderedTasks} />
 }
