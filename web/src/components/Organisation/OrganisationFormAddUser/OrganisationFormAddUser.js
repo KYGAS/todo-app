@@ -7,14 +7,53 @@ import {
   TextField,
   NumberField,
   Submit,
+  SelectField,
 } from '@redwoodjs/forms'
+import { usePageLoadingContext } from '@redwoodjs/router';
+import { useQuery } from '@redwoodjs/web';
+import { toast } from '@redwoodjs/web/dist/toast';
+
+const USERS_QUERY = gql`
+query FindUsers {
+  users {
+    id
+    username
+    email
+    fName
+    lName
+    hashedPassword
+    salt
+    resetToken
+    resetTokenExpiresAt
+  }
+}
+`
+
+
 
 const OrganisationFormAddUser = (props) => {
 
-
+  const queryUsers = useQuery(
+    USERS_QUERY,
+    {
+      onCompleted: () => {
+        toast.success('Users fetched')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
   const onSubmit = (data) => {
-    data.organisation_id = props.organisation.id
-    props.onSave(data, props?.organisation?.id)
+    console.log(data);
+
+    for(let user of data.user_id){
+      let dataObj = {}
+      dataObj.organisation_id = props.organisation.id
+      dataObj.user_id = parseInt(user)
+      props.onSave(dataObj, props?.organisation?.id)
+    }
+    return;
   }
 
   let isOwnerForm = useAuth().currentUser.id==props.organisation.owner_id?(
@@ -32,15 +71,35 @@ const OrganisationFormAddUser = (props) => {
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          UserID
+          User Name
         </Label>
 
-        <NumberField
+        <SelectField
+          multiple={true}
           name="user_id"
           className="rw-input"
           errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
+          validation={
+            {
+              required: true,
+              validate: {
+                matchesInitialValue: (value)=>{
+                  let returnValue = [true]
+                  returnValue = value.map(element=>{
+                    if(element === 'Please select an option')
+                      return 'Select an Option'
+                  })
+                  return returnValue[0]
+                }
+              }
+            }
+          }
+        >
+          <option>Please select an option</option>
+          {
+            queryUsers.data?.users.map(user=>(<option key={user.id} value={user.id}>{user.username}</option>))
+          }
+        </SelectField>
 
         <FieldError name="user_id" className="rw-field-error" />
 
