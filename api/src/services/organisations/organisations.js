@@ -1,3 +1,4 @@
+import { InboundMessageStatus } from 'postmark/dist/client/models';
 import { db } from 'src/lib/db'
 
 export const organisations = ({currentUser}) => {
@@ -72,7 +73,8 @@ export const updateOrganisationChangeUser = ({ input }) => {
                 db.task.findUnique({
                   where : { id : task.task_id }
                 }).then(uniqueTask=>{
-                  uniqueTask.responsible_person_id = input.new_user_id
+                  if(input.new_user_id)
+                    uniqueTask.responsible_person_id = input.new_user_id
                   db.task.update({
                     data: uniqueTask,
                     where : { id : uniqueTask.id }
