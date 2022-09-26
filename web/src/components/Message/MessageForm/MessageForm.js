@@ -49,9 +49,10 @@ export const QUERY = gql`
 
 
 const MessageForm = (props) => {
-  console.log(props);
+
   let id = useAuth().currentUser.id;
   let taskId = props.task;
+
   const onSubmit = (data) => {
     data.emails = data.emails.join(",")
     data.creator_id = id;
