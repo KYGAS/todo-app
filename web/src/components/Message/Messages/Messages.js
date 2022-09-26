@@ -1,7 +1,7 @@
 import humanize from 'humanize-string'
 
 import { Link, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/Message/MessagesCell'
@@ -13,6 +13,24 @@ const DELETE_MESSAGE_MUTATION = gql`
     }
   }
 `
+
+
+export const QUERY_MESSAGES_USERS = gql`
+  query FindOrganisations {
+    users{
+      id
+      username
+      email
+      fName
+      lName
+      hashedPassword
+      salt
+      resetToken
+      resetTokenExpiresAt
+    }
+  }
+`
+
 
 const MAX_STRING_LENGTH = 150
 
@@ -74,13 +92,25 @@ const MessagesList = ({ messages }) => {
     }
   }
 
+  const queryUsers = useQuery(
+    QUERY_MESSAGES_USERS,
+    {
+      onCompleted: () => {
+        toast.success('Users fetched')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
         <thead>
           <tr>
             <th>Id</th>
-            <th>Creator id</th>
+            <th>Creator Name</th>
             <th>Message</th>
             <th>&nbsp;</th>
           </tr>
@@ -88,10 +118,16 @@ const MessagesList = ({ messages }) => {
         <tbody>
           {messages.map((message) => {
             message = message.message;
+
+            let messageOwner;
+            if(queryUsers.data) for(let user of queryUsers.data.users){
+              if(user.id == message.creator_id) messageOwner = user.username;
+            }
+
             return (
             <tr key={message.id}>
               <td>{truncate(message.id)}</td>
-              <td>{truncate(message.creator_id)}</td>
+              <td>{truncate(messageOwner?messageOwner:message.creator_id)}</td>
               <td>{truncate(message.message)}</td>
               <td>
                 <nav className="rw-table-actions">

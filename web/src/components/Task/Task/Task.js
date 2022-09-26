@@ -1,7 +1,7 @@
 import humanize from 'humanize-string'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 const DELETE_TASK_MUTATION = gql`
@@ -11,6 +11,25 @@ const DELETE_TASK_MUTATION = gql`
     }
   }
 `
+
+
+
+export const QUERY = gql`
+  query FindOrganisations {
+    users{
+      id
+      username
+      email
+      fName
+      lName
+      hashedPassword
+      salt
+      resetToken
+      resetTokenExpiresAt
+    }
+  }
+`
+
 
 const formatEnum = (values) => {
   if (values) {
@@ -62,6 +81,24 @@ const Task = ({ task }) => {
     }
   }
 
+
+  const queryUsers = useQuery(
+    QUERY,
+    {
+      onCompleted: () => {
+        toast.success('Users fetched')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
+  let taskOwner;
+  if(queryUsers.data) for(let user of queryUsers.data.users){
+    if(user.id == task.responsible_person_id) taskOwner = user.username;
+  }
+
   return (
     <>
       <div className="rw-segment">
@@ -85,8 +122,8 @@ const Task = ({ task }) => {
               <td>{task.status}</td>
             </tr>
             <tr>
-              <th>Responsible person id</th>
-              <td>{task.responsible_person_id}</td>
+              <th>Responsible person name</th>
+              <td>{taskOwner?taskOwner:task.responsible_person_id}</td>
             </tr>
           </tbody>
         </table>

@@ -1,13 +1,30 @@
 import humanize from 'humanize-string'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 const DELETE_MESSAGE_MUTATION = gql`
   mutation DeleteMessageMutation($id: Int!) {
     deleteMessage(id: $id) {
       id
+    }
+  }
+`
+
+
+export const QUERY = gql`
+  query FindOrganisations {
+    users{
+      id
+      username
+      email
+      fName
+      lName
+      hashedPassword
+      salt
+      resetToken
+      resetTokenExpiresAt
     }
   }
 `
@@ -62,6 +79,26 @@ const Message = ({ message }) => {
     }
   }
 
+
+
+  const queryUsers = useQuery(
+    QUERY,
+    {
+      onCompleted: () => {
+        toast.success('Users fetched')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
+  let messageOwner;
+  if(queryUsers.data) for(let user of queryUsers.data.users){
+    if(user.id == message.creator_id) messageOwner = user.username;
+  }
+
+
   return (
     <>
       <div className="rw-segment">
@@ -77,8 +114,8 @@ const Message = ({ message }) => {
               <td>{message.id}</td>
             </tr>
             <tr>
-              <th>Creator id</th>
-              <td>{message.creator_id}</td>
+              <th>Creator Name</th>
+              <td>{messageOwner?messageOwner:message.creator_id}</td>
             </tr>
             <tr>
               <th>Message</th>

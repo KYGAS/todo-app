@@ -1,7 +1,7 @@
 import humanize from 'humanize-string'
 
 import { Link, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/Organisation/OrganisationsCell'
@@ -14,6 +14,24 @@ const DELETE_ORGANISATION_MUTATION = gql`
     }
   }
 `
+
+
+export const QUERY_USERS_ORGANISATIONS = gql`
+  query FindOrganisations {
+    users{
+      id
+      username
+      email
+      fName
+      lName
+      hashedPassword
+      salt
+      resetToken
+      resetTokenExpiresAt
+    }
+  }
+`
+
 
 const MAX_STRING_LENGTH = 150
 
@@ -76,6 +94,18 @@ const OrganisationsList = ({ organisations }) => {
     }
   }
 
+  const queryUsers = useQuery(
+    QUERY_USERS_ORGANISATIONS,
+    {
+      onCompleted: () => {
+        toast.success('Users fetched')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
@@ -90,11 +120,18 @@ const OrganisationsList = ({ organisations }) => {
         <tbody>
           {organisations.map((organisation) => { organisation = organisation.organisation;
           console.log(organisation);
+
+
+            let organisationOwner;
+            if(queryUsers.data) for(let user of queryUsers.data.users){
+              if(user.id == organisation.owner_id) organisationOwner = user.username;
+            }
+
             return (
             <tr key={organisation.id}>
               <td>{truncate(organisation.id)}</td>
               <td>{truncate(organisation.name)}</td>
-              <td>{truncate(organisation.owner_id)}</td>
+              <td>{truncate(organisationOwner?organisationOwner:organisation.owner_id)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link

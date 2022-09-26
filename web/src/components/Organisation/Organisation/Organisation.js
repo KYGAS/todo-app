@@ -1,7 +1,7 @@
 import humanize from 'humanize-string'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import { useAuth } from '@redwoodjs/auth'
 
@@ -9,6 +9,23 @@ const DELETE_ORGANISATION_MUTATION = gql`
   mutation DeleteOrganisationMutation($id: Int!, $logged_id: Int!) {
     deleteOrganisation(id: $id, logged_id: $logged_id) {
       id
+    }
+  }
+`
+
+
+export const QUERY = gql`
+  query FindOrganisations {
+    users{
+      id
+      username
+      email
+      fName
+      lName
+      hashedPassword
+      salt
+      resetToken
+      resetTokenExpiresAt
     }
   }
 `
@@ -66,6 +83,24 @@ const Organisation = ({ organisation }) => {
     }
   }
 
+
+  const queryUsers = useQuery(
+    QUERY,
+    {
+      onCompleted: () => {
+        toast.success('Users fetched')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
+  let organisationOwner;
+  if(queryUsers.data) for(let user of queryUsers.data.users){
+    if(user.id == organisation.owner_id) organisationOwner = user.username;
+  }
+
   return (
     <>
       <div className="rw-segment">
@@ -85,8 +120,8 @@ const Organisation = ({ organisation }) => {
               <td>{organisation.name}</td>
             </tr>
             <tr>
-              <th>Owner id</th>
-              <td>{organisation.owner_id}</td>
+              <th>Owner Name</th>
+              <td>{organisationOwner?organisationOwner:organisation.owner_id}</td>
             </tr>
           </tbody>
         </table>

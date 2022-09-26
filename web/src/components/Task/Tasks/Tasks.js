@@ -1,7 +1,7 @@
 import humanize from 'humanize-string'
 
 import { Link, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/Task/TasksCell'
@@ -10,6 +10,23 @@ const DELETE_TASK_MUTATION = gql`
   mutation DeleteTaskMutation($id: Int!) {
     deleteTask(id: $id) {
       id
+    }
+  }
+`
+
+
+export const QUERY_TASKS_USERS = gql`
+  query FindOrganisations {
+    users{
+      id
+      username
+      email
+      fName
+      lName
+      hashedPassword
+      salt
+      resetToken
+      resetTokenExpiresAt
     }
   }
 `
@@ -74,6 +91,19 @@ const TasksList = ({ tasks }) => {
     }
   }
 
+  const queryUsers = useQuery(
+    QUERY_TASKS_USERS,
+    {
+      onCompleted: () => {
+        toast.success('Users fetched')
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
+
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
@@ -89,12 +119,17 @@ const TasksList = ({ tasks }) => {
         <tbody>
           {tasks.map((task) => {
             task = task.task;
+
+            let taskOwner;
+            if(queryUsers.data) for(let user of queryUsers.data.users){
+              if(user.id == task.responsible_person_id) taskOwner = user.username;
+            }
             return (
             <tr key={task.id}>
               <td>{truncate(task.id)}</td>
               <td>{truncate(task.name)}</td>
               <td>{truncate(task.status)}</td>
-              <td>{truncate(task.responsible_person_id)}</td>
+              <td>{truncate(taskOwner?taskOwner:task.responsible_person_id)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link
