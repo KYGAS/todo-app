@@ -101,6 +101,14 @@ export const Success = ({ organisation }) => {
           loading={dataObject.loading}
         />
       </div>
+      <div className="rw-segment-main">
+        <OrganisationFormAddUser
+          organisation={organisation}
+          onSave={onAddUser}
+          error={dataObject.error}
+          loading={dataObject.loading}
+        />
+      </div>
     </div>
   )
 }
