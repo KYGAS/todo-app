@@ -51,17 +51,17 @@ export const QUERY = gql`
 const MessageForm = (props) => {
   console.log(props);
   let id = useAuth().currentUser.id;
+  let taskId = props.task;
   const onSubmit = (data) => {
+    data.emails = data.emails.join(",")
     data.creator_id = id;
     props.onSave(data, props?.message?.id)
   }
-
 
   const queryUsers = useQuery(
     QUERY,
     {
       onCompleted: () => {
-        console.log(queryUsers);
         toast.success('Users fetched')
       },
       onError: (error) => {
@@ -70,7 +70,23 @@ const MessageForm = (props) => {
     }
   )
 
-  return <></>
+  let selectableUsers = []
+  if(queryUsers.data)
+  for( let user of queryUsers.data.users){
+    for( let org of user.User_Organisation){
+      org = org.organisation;
+      for( let project of org.Organisation_Project){
+        project = project.project;
+        for( let task of project.Project_Task){
+          task = task.task;
+          if(task.id == taskId){
+            selectableUsers.push(user)
+          }
+        }
+      }
+    }
+  }
+
   return (
     <div className="rw-form-wrapper">
       <Form onSubmit={onSubmit} error={props.error}>
@@ -130,7 +146,7 @@ const MessageForm = (props) => {
         >
           <option>Please select an option</option>
           {
-            queryUsers.data?.users.map(user=>(<option key={user.id} value={user.email}>{user.username}</option>))
+            selectableUsers.map(user=>(<option key={user.id} value={user.email}>{user.username}</option>))
           }
         </SelectField>
 
