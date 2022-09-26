@@ -48,6 +48,48 @@ export const updateOrganisationAddUser = ({id, input}) => {
     data : input
   })
 }
+export const updateOrganisationChangeUser = ({ input }) => {
+  return db.userOnOrganisation.findMany({
+    where : {
+      user_id : 3
+    }
+  }).then(linkUserOrg =>{
+    for(let link of linkUserOrg){
+      if(link.organisation_id == input.organisation_id){
+        return db.organisationOnProject.findMany({
+          where : {
+            organisation_id : link.organisation_id
+          }
+        }).then(linkOrgProj=>{
+          for(let linkedProject of linkOrgProj)
+            db.projectOnTask.findMany({
+              where : {
+                project_id : linkedProject.project_id
+              }
+            }).then(linkProjectTask=>{
+
+              for(let task of linkProjectTask){
+                db.task.findUnique({
+                  where : { id : task.task_id }
+                }).then(uniqueTask=>{
+                  uniqueTask.responsible_person_id = input.new_user_id
+                  db.task.update({
+                    data: uniqueTask,
+                    where : { id : uniqueTask.id }
+                  }).then(_=>{
+                    return;
+                  })
+                })
+              }
+
+            })
+          return db.userOnOrganisation.findFirst()
+        })
+      }
+    }
+    return db.userOnOrganisation.findFirst()
+  })
+}
 
 export const deleteOrganisation = (input, arg2, arg3) => {
 

@@ -5,6 +5,7 @@ import { toast } from '@redwoodjs/web/toast'
 
 import OrganisationForm from 'src/components/Organisation/OrganisationForm'
 import OrganisationFormAddUser from '../OrganisationFormAddUser/OrganisationFormAddUser'
+import OrganisationFormChangeUser from '../OrganisationFormChangeUser/OrganisationFormChangeUser'
 
 export const QUERY = gql`
   query EditOrganisationById($id: Int!) {
@@ -29,10 +30,20 @@ const UPDATE_ORGANISATION_MUTATION = gql`
 `
 
 const UPDATE_ORGANISATION_ADD_USER_MUTATION = gql`
-  mutation UpdateOrganisationAddUserMutation(
+  mutation UPDATE_ORGANISATION_ADD_USER_MUTATION(
     $input: UpdateOrganisationAddUserInput!
   ) {
     updateOrganisationAddUser(input: $input) {
+      id
+    }
+  }
+`
+
+const UPDATE_ORGANISATION_CHANGE_USER_MUTATION = gql`
+  mutation UpdateOrganisationChangeUserMutation(
+    $input: UpdateOrganisationChangeUserInput!
+  ) {
+    updateOrganisationChangeUser(input: $input) {
       id
     }
   }
@@ -71,11 +82,29 @@ export const Success = ({ organisation }) => {
     }
   )
 
+  const [updateOrganisationChangeUser, dataObjectChange] = useMutation(
+    UPDATE_ORGANISATION_CHANGE_USER_MUTATION,
+    {
+      onCompleted: () => {
+        toast.success('User Added')
+        navigate(routes.organisations())
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
   const onSave = (input, id) => {
     updateOrganisation({ variables: { id, input } })
   }
+
   const onAddUser = (input, id) => {
     updateOrganisationAddUser({ variables: { id, input } })
+  }
+
+  const onChangeUser = (input, id) => {
+    updateOrganisationChangeUser({ variables: { id, input } })
   }
 
   return (
@@ -102,11 +131,11 @@ export const Success = ({ organisation }) => {
         />
       </div>
       <div className="rw-segment-main">
-        <OrganisationFormAddUser
+        <OrganisationFormChangeUser
           organisation={organisation}
-          onSave={onAddUser}
-          error={dataObject.error}
-          loading={dataObject.loading}
+          onSave={onChangeUser}
+          error={dataObjectChange.error}
+          loading={dataObjectChange.loading}
         />
       </div>
     </div>

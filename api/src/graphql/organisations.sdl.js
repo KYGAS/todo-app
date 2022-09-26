@@ -26,6 +26,12 @@ export const schema = gql`
     organisation_id : Int
   }
 
+  input UpdateOrganisationChangeUserInput {
+    old_user_id : Int
+    new_user_id : Int
+    organisation_id : Int
+  }
+
   type Mutation {
     createOrganisation(input: CreateOrganisationInput!): Organisation!
       @requireAuth
@@ -35,6 +41,8 @@ export const schema = gql`
     ): Organisation! @requireAuth
     updateOrganisationAddUser( input: UpdateOrganisationAddUserInput! ): Organisation!
      @requireAuth
+     updateOrganisationChangeUser( input: UpdateOrganisationChangeUserInput! ): Organisation!
+      @requireAuth
     deleteOrganisation(
       id: Int!
       logged_id: Int!
